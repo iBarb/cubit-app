@@ -1,0 +1,21 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+*{
+  cursor: default;
+}
+
+
+:root,
+[data-bs-theme=light] {
+  --bs-danger-rgb: 243,63,66;
+  --bs-success-rgb: 59,165,91;
+}
+
+
+[data-bs-theme=dark] {
+  --bs-body-bg: #1c1c27;
+}
