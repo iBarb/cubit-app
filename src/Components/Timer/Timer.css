@@ -1,0 +1,12 @@
+#time{
+    font-size: 12rem;
+    font-family: 'LCD', sans-serif;
+}
+
+#time .hnds{
+    font-size: 8rem;
+}
+
+/* #time.red{
+    color: red;
+} */
