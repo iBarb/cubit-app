@@ -4,18 +4,40 @@ body,
   height: 100%;
 }
 
-*{
+* {
   cursor: default;
+  user-select: none;
 }
 
 
 :root,
 [data-bs-theme=light] {
-  --bs-danger-rgb: 243,63,66;
-  --bs-success-rgb: 59,165,91;
+  --bs-danger-rgb: 243, 63, 66;
+  --bs-success-rgb: 59, 165, 91;
+  --bs-tertiary-bg-rgb: 242, 242, 244;
+  --bs-basic-bg-rgb: 0, 0, 0;
 }
-
 
 [data-bs-theme=dark] {
   --bs-body-bg: #1c1c27;
+  --bs-body-bg-rgb: 18,18,25;
+  --bs-tertiary-bg-rgb: 29,29,39;
+  --bs-basic-bg-rgb: 255, 255, 255;
+}
+
+.table{
+  --bs-table-bg: transparent;
+  --bs-table-border-color: rgba(var(--bs-basic-bg-rgb), 0.329);
+  margin-bottom: 0;
+}
+
+
+.out-table {
+  background: rgba(var(--bs-basic-bg-rgb), 0.15);
+  border-radius: 5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.2px);
+  -webkit-backdrop-filter: blur(5.2px);
+  border: 1px solid rgba(var(--bs-basic-bg-rgb), 0.329);
+  overflow: hidden;
 }
