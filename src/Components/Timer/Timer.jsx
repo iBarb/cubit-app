@@ -9,7 +9,7 @@ const Timer = () => {
 
 
   return (
-    <div className="d-flex justify-content-center align-items-center h-100 text-center">
+    <div className="bg-body-tertiary d-flex justify-content-center align-items-center w-100 h-100 text-center rounded">
       <div>
         <div>
           <div id='time' className={`${getClassNameByCode(statusTimer)}`}>
