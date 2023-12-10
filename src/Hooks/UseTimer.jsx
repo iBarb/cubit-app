@@ -2,8 +2,11 @@ import { useCallback } from 'react';
 import { useState, useEffect } from 'react';
 import { useMemo } from 'react';
 import { useRef } from 'react';
+import { UseSession } from '../Context/SessionContext';
 
 export const UseTimer = () => {
+    const { addTime } = UseSession();
+    
     const [hnds, setHnds] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(null);
@@ -101,7 +104,9 @@ export const UseTimer = () => {
 
     const Stop = useCallback(() => {
         clearInterval(control);
-    }, [control]);
+        addTime(hoursRef.current, minutesRef.current, secondsRef.current, hndsRef.current);
+        
+    }, [control, addTime]);
 
     const restart = useCallback(() => {
         clearInterval(control);
