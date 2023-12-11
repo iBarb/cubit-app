@@ -4,7 +4,7 @@ import { UseSession } from '../../Context/SessionContext';
 const SideBar = () => {
     const [parent] = useAutoAnimate()
     const { session, FormatTime } = UseSession()
-    
+
     return (
         <div className="d-flex flex-column flex-shrink-0 py-3 px-2 bg-body-tertiary h-100 rounded" style={{ width: '280px' }}>
             <div className="out-table">
@@ -19,10 +19,11 @@ const SideBar = () => {
                     </thead>
                     <tbody ref={parent}>
                         {session && session.length > 0 &&
-                            session.map((item, index) => {
+                            session.slice().reverse().map((item, index ,array) => {
+                                const reverseIndex = array.length - index;
                                 return (
                                     <tr key={item.id}>
-                                        <td>{index + 1}</td>
+                                        <td>{reverseIndex}</td>
                                         <td>{FormatTime(item.time)}</td>
                                         <td>{FormatTime(item.ao5)}</td>
                                         <td>{FormatTime(item.ao12)}</td>
