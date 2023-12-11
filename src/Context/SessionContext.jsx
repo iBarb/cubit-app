@@ -48,8 +48,8 @@ export function SessionProvider({ children }) {
 
         ArrTimes = [...times, newTime];
 
-        let averageTime5
-        let averageTime12
+        let averageTime5 = "-"
+        let averageTime12 = "-"
 
         if (ArrTimes.length >= 5) {
             let lastFive = ArrTimes.slice(-5);
@@ -110,7 +110,7 @@ export function SessionProvider({ children }) {
     };
 
     function FormatTime(ObjTime) {
-        if (ObjTime === "-") {
+        if (!ObjTime || ObjTime === "-") {
             return "-";
         }
 
@@ -131,7 +131,9 @@ export function SessionProvider({ children }) {
     const values = {
         session,
         addTime,
-        FormatTime
+        FormatTime,
+        ao5,
+        ao12
     }
 
     return (
