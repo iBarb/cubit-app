@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import PropTypes from 'prop-types';
+import { calculateAverage } from "../General/Function";
 
 const SessionContext = createContext(null);
 
@@ -11,129 +12,86 @@ export function UseSession() {
 }
 
 export function SessionProvider({ children }) {
-    const [session, setSession] = useState([]);
+    const [session, setSession] = useState({});
+    const [CurrentSessionId, setCurrentSessionId] = useState(1)
+    const [ArrSessions, setArrSessions] = useState([{
+        id: 1,
+        name: "1"
+    }])
     const [times, setTimes] = useState([]);
     const [ao5, setAo5] = useState([]);
     const [ao12, setAo12] = useState([]);
 
-    function calculateAverage(timesArray) {
-        let timesMS = timesArray.map(timeObj => timeToMs(timeObj));
-
-        timesMS.sort((a, b) => {
-            return a - b;
-        })
-
-        // Eliminar los tiempos mas altos y mas bajos
-        timesMS = timesMS.slice(1, -1);
-
-        const sum = timesMS.reduce((total, numero) => total + numero, 0)
-
-        const average = sum / timesMS.length;
-
-        return msToTime(average);
-    }
 
     function addTime(hours, minutes, seconds, hnds) {
-        let ArrTimes = []
+        let ArrTimesObj = []
         let ArrAo5 = []
         let ArrAo12 = []
-        let ArrSession = []
+        let ArrTimes = []
+        let SessionsObj = {};
 
-        let newTime = {
+        let newTimeObj = {
             hours: ~~hours,
             minutes: ~~minutes,
             seconds: ~~seconds,
             hnds: ~~hnds
         };
 
-        ArrTimes = [...times, newTime];
+        ArrTimesObj = [...times, newTimeObj];
 
         let averageTime5 = "-"
         let averageTime12 = "-"
-
-        if (ArrTimes.length >= 5) {
-            let lastFive = ArrTimes.slice(-5);
+        
+        if (ArrTimesObj.length >= 5) {
+            let lastFive = ArrTimesObj.slice(-5);
             averageTime5 = calculateAverage(lastFive)
         }
-        if (ArrTimes.length >= 12) {
-            let lastTwelve = ArrTimes.slice(-12);
+        if (ArrTimesObj.length >= 12) {
+            let lastTwelve = ArrTimesObj.slice(-12);
             averageTime12 = calculateAverage(lastTwelve)
         }
 
         ArrAo5 = [...ao5, averageTime5];
         ArrAo12 = [...ao12, averageTime12];
 
-        ArrSession = [...session, {
-            id: session.length + 1,
-            time: newTime,
+        SessionsObj = { ...session };
+
+        const currentSessionArray = SessionsObj[CurrentSessionId] || [];
+
+        ArrTimes = [...currentSessionArray, {
+            id: currentSessionArray.length + 1,
+            time: newTimeObj,
             ao5: averageTime5 || "-",
             ao12: averageTime12 || "-",
+            date: new Date()
         }];
 
-        setTimes(ArrTimes);
+        SessionsObj[CurrentSessionId] = ArrTimes;
+
+        setTimes(ArrTimesObj);
         setAo5(ArrAo5);
         setAo12(ArrAo12);
-        setSession(ArrSession);
+        setSession(SessionsObj);
 
     }
 
-    const timeToMs = (timeObj) => {
-        const ms = (
-            timeObj.hours * 3600000 +
-            timeObj.minutes * 60000 +
-            timeObj.seconds * 1000 +
-            timeObj.hnds * 10
-        )
-        return ms;
-    }
-
-    const msToTime = (ms) => {
-        let remainingMs = ms;
-
-        const hours = Math.floor(remainingMs / 3600000);
-        remainingMs %= 3600000;
-
-        const minutes = Math.floor(remainingMs / 60000);
-        remainingMs %= 60000;
-
-        const seconds = Math.floor(remainingMs / 1000);
-        remainingMs %= 1000;
-
-        const hnds = Math.floor(remainingMs / 10);
-
-        return {
-            hours,
-            minutes,
-            seconds,
-            hnds
-        };
-    };
-
-    function FormatTime(ObjTime) {
-        if (!ObjTime || ObjTime === "-") {
-            return "-";
+    // Manejor de las sessiones
+    function ResetSession(idSession) {
+        if (idSession) {
+            setSession({ ...session, [idSession]: [] })
         }
-
-        const formatPart = (value) => (value < 10 ? `0${value}` : `${value}`);
-
-        const { hours, minutes, seconds, hnds } = ObjTime;
-
-        const timeParts = [
-            hours > 0 ? hours + ':' : '',
-            minutes> 0 ? minutes + ':' : '',
-            seconds + '.',
-            hnds >= 0 ? formatPart(hnds) : hnds,
-        ];
-
-        return timeParts.join('');
     }
 
     const values = {
         session,
-        addTime,
-        FormatTime,
         ao5,
-        ao12
+        ao12,
+        CurrentSessionId,
+        setCurrentSessionId,
+        ResetSession,
+        ArrSessions,
+        setArrSessions,
+        addTime
     }
 
     return (
