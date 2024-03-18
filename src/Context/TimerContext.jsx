@@ -1,16 +1,30 @@
-import { useCallback } from 'react';
-import { useState, useEffect } from 'react';
-import { useMemo } from 'react';
-import { useRef } from 'react';
-import { UseSession } from '../Context/SessionContext';
+import { useState } from "react";
+// import { useCallback } from "react";
+import { useContext } from "react";
+import { createContext } from "react";
+import PropTypes from 'prop-types';
+import { UseSession } from "./SessionContext";
+import { useRef } from "react";
+import { useMemo } from "react";
+import { useCallback } from "react";
+import { useEffect } from "react";
 
-export const UseTimer = () => {
+const TimerContext = createContext(null);
+
+export function UseTimer() {
+    return useContext(TimerContext)
+}
+
+export function TimerProvider({ children }) {
     const { addTime } = UseSession();
-    
+
+    const [TimerAviable, setTimerAviable] = useState(true)
+
     const [hnds, setHnds] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(null);
-    const [hours, sethours] = useState(null);
+    const [hours, setHours] = useState(null);
+
     const [statusTimer, setStatusTimer] = useState(0);
     const [control, setControl] = useState(null);
     const [timerID, setTimerID] = useState(null);
@@ -93,7 +107,7 @@ export const UseTimer = () => {
         if ((hndsRef.current == 0) && (secondsRef.current == 0) && (minutesRef.current == 0)) {
             hoursRef.current++;
             if (hoursRef.current < 10) { hoursRef.current = "0" + hoursRef.current }
-            sethours(hoursRef.current);
+            setHours(hoursRef.current);
         }
     }, [])
 
@@ -105,7 +119,7 @@ export const UseTimer = () => {
     const Stop = useCallback(() => {
         clearInterval(control);
         addTime(hoursRef.current, minutesRef.current, secondsRef.current, hndsRef.current);
-        
+
     }, [control, addTime]);
 
     const restart = useCallback(() => {
@@ -113,7 +127,7 @@ export const UseTimer = () => {
         setHnds(0);
         setSeconds(0);
         setMinutes(0);
-        sethours(0);
+        setHours(0);
 
         hndsRef.current = 0
         secondsRef.current = 0
@@ -147,19 +161,46 @@ export const UseTimer = () => {
 
 
     useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown, false);
-        document.addEventListener('keyup', handleKeyUp, false);
+        if (TimerAviable) {
+            document.addEventListener('keydown', handleKeyDown, false);
+            document.addEventListener('keyup', handleKeyUp, false);
+        }else{
+            clearInterval(control);
+            document.removeEventListener('keydown', handleKeyDown, false);
+            document.removeEventListener('keyup', handleKeyUp, false);
+        }
 
         return () => {
             clearInterval(control);
             document.removeEventListener('keydown', handleKeyDown, false);
             document.removeEventListener('keyup', handleKeyUp, false);
         };
-    }, [control, handleKeyDown, handleKeyUp]);
+    }, [control, handleKeyDown, handleKeyUp, TimerAviable]);
 
 
 
+    const values = {
+        hours,
+        minutes,
+        seconds,
+        hnds,
+        setHnds,
+        setSeconds,
+        setMinutes,
+        setHours,
+        getClassNameByCode,
+        statusTimer,
+        TimerAviable,
+        setTimerAviable
+    }
 
-    return {hours, minutes, seconds, hnds, getClassNameByCode, statusTimer};
+    return (
+        <TimerContext.Provider value={values}>
+            {children}
+        </TimerContext.Provider>
+    )
 }
 
+TimerProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
