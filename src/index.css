@@ -20,15 +20,21 @@ body,
 
 [data-bs-theme=dark] {
   --bs-body-bg: #1c1c27;
-  --bs-body-bg-rgb: 18,18,25;
-  --bs-tertiary-bg-rgb: 29,29,39;
+  --bs-body-bg-rgb: 18, 18, 25;
+  --bs-tertiary-bg-rgb: 29, 29, 39;
   --bs-basic-bg-rgb: 255, 255, 255;
 }
 
-.table{
+.table {
   --bs-table-bg: transparent;
   --bs-table-border-color: rgba(var(--bs-basic-bg-rgb), 0.329);
   margin-bottom: 0;
+}
+
+.CustomAlert {
+  background-color: var(--bs-body-bg) !important;
+  border: 1px solid rgba(var(--bs-basic-bg-rgb), .15);
+  color: rgba(var(--bs-basic-bg-rgb), 1);
 }
 
 
@@ -40,4 +46,132 @@ body,
   -webkit-backdrop-filter: blur(5.2px);
   border: 1px solid rgba(var(--bs-basic-bg-rgb), 0.329);
   overflow: hidden;
+}
+
+.form-select {
+  background-color: rgba(var(--bs-basic-bg-rgb), 0.15);
+  border: 1px solid rgba(var(--bs-basic-bg-rgb), 0.329);
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: rgba(var(--bs-basic-bg-rgb), 0.15);
+  border: 1px solid rgba(var(--bs-basic-bg-rgb), 0.329);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(var(--bs-basic-bg-rgb), 0.15);
+  border: 1px solid rgba(var(--bs-basic-bg-rgb), 0.329);
+}
+
+.btn * {
+  cursor: pointer;
+}
+
+svg {
+  fill: rgba(var(--bs-basic-bg-rgb), 1);
+}
+
+.table .clickable:hover {
+  background-color: rgba(var(--bs-basic-bg-rgb), 0.2);
+  cursor: pointer;
+}
+
+.modal-body .title {
+  text-align: center;
+  font: 1.5em bold;
+  font-family: Impact;
+  white-space: break-spaces;
+  overflow-x: hidden;
+  margin-bottom: .5rem;
+}
+
+.body {
+  padding: .5rem;
+}
+
+.body .time {
+  font-family: 'LCD', sans-serif;
+  font-size: 3rem;
+}
+
+.body .options {
+  display: flex;
+  gap: .8rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.body .options span,
+body .options span * {
+  cursor: pointer;
+
+}
+
+.body .scramble {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.body .date {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.footer {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar {
+  width: 280px;
+}
+
+#ModalAVG .body {
+  font-family: monospace;
+  font-size: .9rem;
+  background-color: rgba(var(--bs-basic-bg-rgb), 0.08);
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  position: relative;
+}
+
+#ModalAVG .body ol {
+  padding-left: 2.5rem;
+  margin: 0;
+}
+
+#ModalAVG .modal-dialog {
+  max-width: 780px;
+}
+
+
+.CopyAVG {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+.CopyAVG * {
+  cursor: pointer;
+  fill: rgba(var(--bs-basic-bg-rgb), .5);
+}
+
+.avg-generated {
+  white-space: pre-line;
+  font-family: monospace;
+}
+
+body.swal2-height-auto {
+  height: 100% !important;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: var(--bs-border-radius-sm);
 }
