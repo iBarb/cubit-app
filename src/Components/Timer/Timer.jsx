@@ -1,17 +1,17 @@
 
 import './Timer.css';
-import { UseTimer } from "../../Hooks/UseTimer";
 import { UseSession } from '../../Context/SessionContext';
-
-
+import { UseTimer } from '../../Context/TimerContext';
+import { FormatTime } from '../../General/Function';
 
 const Timer = () => {
   const { hours, minutes, seconds, hnds, getClassNameByCode, statusTimer } = UseTimer();
-  const { ao5, ao12, FormatTime } = UseSession()
-  
+  const { ao5, ao12 } = UseSession()
+
+
   return (
-    <div className="bg-body-tertiary d-flex justify-content-center align-items-center w-100 h-100 text-center rounded">
-      <div>
+    <div className={`d-flex bg-body-tertiary justify-content-center align-items-center w-100 h-100 text-center rounded`}>
+      <div style={{ viewTransitionName: "Timer" }} >
         <div>
           <div id='time' className={`${getClassNameByCode(statusTimer)}`}>
             <span>{hours ? hours + ":" : ''}</span>
@@ -28,6 +28,7 @@ const Timer = () => {
             <span> ao12: {FormatTime(ao12[ao12.length - 1])}</span>
           </div>
         </div>
+
       </div>
     </div>
   );

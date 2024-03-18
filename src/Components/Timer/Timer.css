@@ -6,6 +6,13 @@
 #time .hnds{
     font-size: 8rem;
 }
+#avg{
+    margin-top: -50px;
+}
+
+#avg span{
+    font-size: 3rem;
+}
 
 /* #time.red{
     color: red;
