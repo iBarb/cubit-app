@@ -4,7 +4,7 @@ import { useState } from 'react';
 import SessionManage from '../SesionManage/SessionManage';
 import { AnimatePresence, motion } from "framer-motion";
 import { Toast } from '../../General/Alert';
-import { FormatDate_Time, FormatTime } from '../../General/Function';
+import { FormatDate, FormatDate_Time, FormatTime, addMinMaxFlag } from '../../General/Function';
 
 function Stats() {
     const { session, CurrentSessionId } = UseSession()
@@ -25,14 +25,15 @@ function Stats() {
     }
 
     function OnClickAVG(value, item, flagAo5) {
+        console.log(session);
         let avg = []
         if (!value || value === '-') {
             return
         }
         else if (flagAo5) {
-            avg = session.slice(item.id - 5, item.id)
+            avg = session[CurrentSessionId].slice(item.id - 5, item.id)
         } else {
-            avg = session.slice(item.id - 12, item.id)
+            avg = session[CurrentSessionId].slice(item.id - 12, item.id)
         }
 
         avg = addMinMaxFlag(avg)
