@@ -67,11 +67,11 @@ function SessionManage() {
         }).then((result) => {
             if (result.isConfirmed && result.value) {
                 let newArrSessions = [...ArrSessions];
-                
+
                 for (let i = 0; i < newArrSessions.length; i++) {
                     if (newArrSessions[i].id === parseInt(CurrentSessionId)) {
                         newArrSessions[i].name = result.value;
-                        break; 
+                        break;
                     }
                 }
                 setArrSessions(newArrSessions);
@@ -80,13 +80,33 @@ function SessionManage() {
     };
 
     const removeSession = () => {
-        const newArrSessions = ArrSessions.filter((s) => {
-            if (s.id !== parseInt(CurrentSessionId)) {
-                return s;
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            customClass: {
+                confirmButton: "btn-sm",
+                cancelButton: "btn-sm",
+                popup: "CustomAlert",
+                input: "form-control-sm"
+            },
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newArrSessions = ArrSessions.filter((s) => {
+                    if (s.id !== parseInt(CurrentSessionId)) {
+                        return s;
+                    }
+                });
+                setCurrentSessionId(CurrentSessionId - 1);
+                setArrSessions(newArrSessions);
             }
         });
-        setCurrentSessionId(CurrentSessionId - 1);
-        setArrSessions(newArrSessions);
+
+        
     };
 
     const handleChange = (e) => {
