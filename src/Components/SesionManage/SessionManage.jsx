@@ -4,110 +4,18 @@ import { UseSession } from '../../Context/SessionContext';
 import { UseTimer } from '../../Context/TimerContext';
 
 function SessionManage() {
-    const { CurrentSessionId, setCurrentSessionId, ResetSession, ArrSessions, setArrSessions } = UseSession()
+    const { CurrentSessionId, setCurrentSessionId, ResetSession, ArrSessions, addSession, editSession, removeSession } = UseSession()
     const { setHnds, setSeconds, setMinutes, setHours } = UseTimer();
 
     const HandleResetSession = () => {
-        const Alert = Swal.mixin({
-            customClass: {
-                confirmButton: "btn-sm",
-                cancelButton: "btn-sm",
-                popup: "CustomAlert"
-            }
-        });
-        Alert.fire({
-            title: "Are you sure?",
-            text: "You will reset all timers of this session.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "OK",
-            cancelButtonText: "Cancel",
-            confirmButtonColor: "#28a745",
-            cancelButtonColor: "#dc3545",
-            reverseButtons: true,
-            returnFocus: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                ResetSession(CurrentSessionId)
-                setHnds(0)
-                setSeconds(0)
-                setMinutes(null)
-                setHours(null)
-                return
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                return
-            }
-        });
+        ResetSession(CurrentSessionId);
+        setHnds(0)
+        setSeconds(0)
+        setMinutes(null)
+        setHours(null)
     }
 
-    const addSession = () => {
-        const CurrentSession = ArrSessions[ArrSessions.length - 1]
-        setArrSessions([...ArrSessions, { id: CurrentSession.id + 1, name: CurrentSession.id + 1 }]);
-        setCurrentSessionId(CurrentSession.id + 1);
-    };
 
-    const editSession = () => {
-        Swal.fire({
-            title: "Enter new Name",
-            input: "text",
-            inputAttributes: {
-                autocapitalize: "off"
-            },
-            customClass: {
-                confirmButton: "btn-sm",
-                cancelButton: "btn-sm",
-                popup: "CustomAlert",
-                input: "form-control-sm"
-            },
-            showCancelButton: true,
-            confirmButtonText: "Save",
-            confirmButtonColor: "#28a745",
-            cancelButtonColor: "#dc3545",
-            returnFocus: false
-        }).then((result) => {
-            if (result.isConfirmed && result.value) {
-                let newArrSessions = [...ArrSessions];
-
-                for (let i = 0; i < newArrSessions.length; i++) {
-                    if (newArrSessions[i].id === parseInt(CurrentSessionId)) {
-                        newArrSessions[i].name = result.value;
-                        break;
-                    }
-                }
-                setArrSessions(newArrSessions);
-            }
-        });
-    };
-
-    const removeSession = () => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            customClass: {
-                confirmButton: "btn-sm",
-                cancelButton: "btn-sm",
-                popup: "CustomAlert",
-                input: "form-control-sm"
-            },
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const newArrSessions = ArrSessions.filter((s) => {
-                    if (s.id !== parseInt(CurrentSessionId)) {
-                        return s;
-                    }
-                });
-                setCurrentSessionId(CurrentSessionId - 1);
-                setArrSessions(newArrSessions);
-            }
-        });
-
-        
-    };
 
     const handleChange = (e) => {
         if (e.target.value === "add") {
