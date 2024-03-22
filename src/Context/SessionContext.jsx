@@ -5,6 +5,7 @@ import { createContext } from "react";
 import PropTypes from 'prop-types';
 import { calculateAverage } from "../General/Function";
 import Swal from "sweetalert2";
+import { Toast } from "../General/Alert";
 
 const SessionContext = createContext(null);
 
@@ -166,7 +167,19 @@ export function SessionProvider({ children }) {
 
     };
 
-    function DeleteTime(params) {
+    function DeleteTime(idTime, modal) {
+       const CopySession = {...session}
+
+       const CurrentTimeIndex = CopySession[CurrentSessionId].findIndex((time) => time.id === idTime);
+
+       CopySession[CurrentSessionId].splice(CurrentTimeIndex, 1);
+       setSession(CopySession);
+
+       modal.hide()
+       Toast.fire({
+           icon: "success",
+           title: "Time Deleted"
+       })
 
     }
 
@@ -184,6 +197,7 @@ export function SessionProvider({ children }) {
         addSession,
         editSession,
         removeSession,
+        DeleteTime
     }
 
     return (
