@@ -16,7 +16,7 @@ export function UseTimer() {
 }
 
 export function TimerProvider({ children }) {
-    const { addTime } = UseSession();
+    const { addTime, session, CurrentSessionId } = UseSession();
 
     const [TimerAviable, setTimerAviable] = useState(true)
 
@@ -164,7 +164,7 @@ export function TimerProvider({ children }) {
         if (TimerAviable) {
             document.addEventListener('keydown', handleKeyDown, false);
             document.addEventListener('keyup', handleKeyUp, false);
-        }else{
+        } else {
             clearInterval(control);
             document.removeEventListener('keydown', handleKeyDown, false);
             document.removeEventListener('keyup', handleKeyUp, false);
@@ -176,6 +176,23 @@ export function TimerProvider({ children }) {
             document.removeEventListener('keyup', handleKeyUp, false);
         };
     }, [control, handleKeyDown, handleKeyUp, TimerAviable]);
+
+    useEffect(() => {
+        const arrTimes = session[CurrentSessionId];
+        // const lastTime = arrTimes[arrTimes.length - 1];
+        const lastTime = arrTimes ? arrTimes[arrTimes.length - 1] : null;
+
+        const hnds = lastTime ? lastTime.time.hnds : 0;
+        const seconds = lastTime ? lastTime.time.seconds : 0;
+        const minutes = lastTime ? lastTime.time.minutes : null;
+        const hours = lastTime ? lastTime.time.hours : null;
+
+        setHnds(hnds)
+        setSeconds(seconds)
+        setMinutes(minutes)
+        setHours(hours)
+
+    }, [session])
 
 
 
