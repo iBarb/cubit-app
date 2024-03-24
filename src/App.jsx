@@ -11,9 +11,10 @@ function App() {
   const [IsFocus, setIsFocus] = useState(false)
 
   useEffect(() => {
+    console.log(statusTimer);
     document.startViewTransition(() =>{
       flushSync(() => {
-        if (statusTimer === 2) {
+        if (statusTimer === 2 || statusTimer === 6) {
           setIsFocus(true)
     
         } else if (statusTimer === 0) {
