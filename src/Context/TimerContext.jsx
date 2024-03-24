@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { useCallback } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import PropTypes from 'prop-types';
@@ -118,7 +117,13 @@ export function TimerProvider({ children }) {
 
     const Stop = useCallback(() => {
         clearInterval(control);
-        addTime(hoursRef.current, minutesRef.current, secondsRef.current, hndsRef.current);
+
+        const hours = hoursRef.current === -1 ? 99 : hoursRef.current;
+        const minutes = minutesRef.current === -1 ? 99 : minutesRef.current;
+        const seconds = secondsRef.current === -1 ? 99 : secondsRef.current;
+        const hnds = hndsRef.current === -1 ? 99 : hndsRef.current;
+
+        addTime(hours, minutes, seconds, hnds);
 
     }, [control, addTime]);
 
@@ -180,11 +185,11 @@ export function TimerProvider({ children }) {
     useEffect(() => {
         const arrTimes = session[CurrentSessionId];
         const lastTime = arrTimes ? arrTimes[arrTimes.length - 1] : null;
-    
+
         if (lastTime) {
             const { time } = lastTime;
             let { hnds, seconds, minutes, hours } = time;
-    
+
             if (hnds !== 0 && hnds < 10) { hnds = "0" + hnds }
             if (seconds !== 0 && seconds < 10) { seconds = "0" + seconds }
             if (minutes !== 0 && minutes < 10) { minutes = "0" + minutes }
@@ -196,7 +201,7 @@ export function TimerProvider({ children }) {
             setHours(hours);
         }
     }, [session, CurrentSessionId]);
-    
+
 
 
 
