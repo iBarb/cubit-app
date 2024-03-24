@@ -155,7 +155,7 @@ export function TimerProvider({ children }) {
             setStatusTimer(STATUS.IDLE.code);
             clearTimeout(timerID)
         } else if (statusTimer === STATUS.PROCESS.code) {
-            setStatusTimer(STATUS.END_SOLVE.code);
+            setStatusTimer(STATUS.IDLE.code);
         }
     }, [timerID, STATUS, statusTimer, start]);
 
@@ -179,20 +179,24 @@ export function TimerProvider({ children }) {
 
     useEffect(() => {
         const arrTimes = session[CurrentSessionId];
-        // const lastTime = arrTimes[arrTimes.length - 1];
         const lastTime = arrTimes ? arrTimes[arrTimes.length - 1] : null;
+    
+        if (lastTime) {
+            const { time } = lastTime;
+            let { hnds, seconds, minutes, hours } = time;
+    
+            if (hnds !== 0 && hnds < 10) { hnds = "0" + hnds }
+            if (seconds !== 0 && seconds < 10) { seconds = "0" + seconds }
+            if (minutes !== 0 && minutes < 10) { minutes = "0" + minutes }
+            if (hours !== 0 && hours < 10) { hours = "0" + hours }
 
-        const hnds = lastTime ? lastTime.time.hnds : 0;
-        const seconds = lastTime ? lastTime.time.seconds : 0;
-        const minutes = lastTime ? lastTime.time.minutes : null;
-        const hours = lastTime ? lastTime.time.hours : null;
-
-        setHnds(hnds)
-        setSeconds(seconds)
-        setMinutes(minutes)
-        setHours(hours)
-
-    }, [session])
+            setHnds(hnds);
+            setSeconds(seconds);
+            setMinutes(minutes);
+            setHours(hours);
+        }
+    }, [session, CurrentSessionId]);
+    
 
 
 
