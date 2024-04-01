@@ -199,6 +199,11 @@ export function TimerProvider({ children }) {
             setSeconds(seconds);
             setMinutes(minutes);
             setHours(hours);
+        }else{
+            setHnds(0);
+            setSeconds(0);
+            setMinutes(null);
+            setHours(null);
         }
     }, [session, CurrentSessionId]);
 
